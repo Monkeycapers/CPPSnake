@@ -33,11 +33,11 @@ void Game::loop() {
 			}
 			else if (e.type == SDL_KEYDOWN) {
 				//Todo: Prevent moving "backwards"
-				switch (e.key.keysym.sym) {
+				/*switch (e.key.keysym.sym) {
+
 				case SDLK_LEFT:
 					snake->direction = snake->LEFT;
 					break;
-
 				case SDLK_RIGHT:
 					snake->direction = snake->RIGHT;
 					break;
@@ -51,7 +51,22 @@ void Game::loop() {
 				case SDLK_r:
 					snake->restart();
 					break;
-				}
+				}*/
+
+				 SDL_Keycode k = e.key.keysym.sym;
+				 
+				 if ((k == SDLK_LEFT || k == SDLK_a) && (snake->direction != snake->RIGHT))
+					 snake->direction = snake->LEFT;
+				 else if ((k == SDLK_RIGHT || k == SDLK_d) && (snake->direction != snake->LEFT))
+					 snake->direction = snake->RIGHT;
+				 else if ((k == SDLK_UP || k == SDLK_w) && (snake->direction != snake->DOWN))
+					 snake->direction = snake->UP;
+				 else if ((k == SDLK_DOWN || k == SDLK_s) && (snake->direction != snake->UP))
+					 snake->direction = snake->DOWN;
+				 else if (k == SDLK_r)
+					 snake->restart();
+					
+
 			}
 		}
 		if (timerFlag) {
