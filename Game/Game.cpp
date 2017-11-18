@@ -97,7 +97,8 @@ void Game::gameTick() {
 		return;
 	}
 	if (snake->head.point.x == food.point.x && snake->head.point.y == food.point.y) {
-		snake->grow(1);
+		//snake->grow(1);
+		snake->growWith(food);
 		food = getRandomFood(1000, 0);
 	}
 
@@ -121,7 +122,7 @@ void Game::restart() {
 Body Game::getRandomFood(int maxIterations, int currentIterations) {
 	//if the current iterations is higher than the max, we have failed to find a spot for the food randomly
 	if (currentIterations > maxIterations) return { -1, -1 };
-	Body body = { {rand() % sizeX, rand() % sizeY}, {255, 0, 0, 255} };
+	Body body = { {rand() % sizeX, rand() % sizeY}, getRandomColor() };
 	bool failed = false;
 	if (body.point.x == snake->head.point.x && body.point.y == snake->head.point.y) failed = true;
 	//if (body.point.x == sizeX / 2 && body.point.y == sizeY / 2) idk what this check was for (???)
@@ -132,4 +133,21 @@ Body Game::getRandomFood(int maxIterations, int currentIterations) {
 	}
 
 	return body;
+}
+
+Color Game::getRandomColor() {
+	//Produce vibrant colors, that can't be (white) (in theory)
+	int r = (int)(rand() % 3);
+	int r1 = (255 - (int)(rand() % 200));
+	int r2 = (255 - (int)(rand() % 200));
+
+	if (r == 1) {
+		return { r1, r2, 0, 255 };
+	}
+	else if (r == 2) {
+		return { 0, r1, r2, 255 };
+	}
+	else {
+		return {r1, 0, r2, 255};
+	}
 }

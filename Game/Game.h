@@ -19,6 +19,7 @@ public:
 	void start();
 	void gameTick();
 	void restart();
+	Color getRandomColor();
 
 	SDL_TimerID gameTimerId;
 

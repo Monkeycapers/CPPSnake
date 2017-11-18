@@ -2,7 +2,7 @@
 #include "Body.h"
 #include "Color.h"
 #include "Point.h"
-
+#include <iostream>
 
 Snake::Snake()
 {
@@ -17,9 +17,16 @@ Snake::~Snake()
 void Snake::grow(int increment) {
 
 	for (int i = 0; i < increment; i++) {
-		body.push_front({ head });
+		body.push_front({head});
 	}
 
+}
+
+void Snake::growWith(Body with) {
+	body.push_front({ with });
+	head = with;
+	//std::cout << "\n" << with.point.x << " " << with.point.y << ", " << with.color.r << " " << with.color.g << " " << with.color.b << std::endl;
+	//std::cout << "\n" << head.point.x << " " << head.point.y << ", " << head.color.r << " " << head.color.g << " " << head.color.b << std::endl;
 }
 
 void Snake::tick1() {
@@ -30,13 +37,15 @@ void Snake::tick1() {
 }
 
 void Snake::tick2() {
-	body.push_back(head);
+	Body b = body.front();
 	body.pop_front();
+	body.push_back({ {head.point.x, head.point.y}, {b.color.r, b.color.g, b.color.b, b.color.a} });
+	
 }
 
 void Snake::restart() {
 	body.clear();
-	head = { FIRST_POINT, color };
+	head = { FIRST_POINT, getRandomColor() };
 	grow(1);
 	direction = FIRST_DIRECTION;
 	

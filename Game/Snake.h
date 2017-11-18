@@ -5,6 +5,7 @@
 #include "Body.h"
 #include "Point.h"
 #include "Color.h"
+#include "Util.h"
 
 class Snake
 {
@@ -27,6 +28,8 @@ public:
 	Body head;
 
 	void grow(int increment);
+
+	void growWith(Body with);
 
 	void tick1();
 	void tick2();

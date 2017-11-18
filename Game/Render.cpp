@@ -89,18 +89,19 @@ bool Render::draw(Snake* snake, int sizeX, int sizeY, Body food) {
 	SDL_RenderDrawRect(gRenderer, &rect);
 	for (std::deque<Body>::iterator it = snake->body.begin(); it != snake->body.end(); ++it) {
 		rect = { (*it).point.x * SNAKE_BODY_WIDTH, (*it).point.y * SNAKE_BODY_HEIGHT, SNAKE_BODY_WIDTH, SNAKE_BODY_HEIGHT };
-		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, (*it).color.r, (*it).color.g, (*it).color.b, (*it).color.a);
 		SDL_RenderFillRect(gRenderer, &rect);
 		SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 		SDL_RenderDrawRect(gRenderer, &rect);
-		
 	}
 
-	SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, 255);
+	SDL_SetRenderDrawColor(gRenderer, food.color.r, food.color.g, food.color.b, food.color.a);
 	rect = { food.point.x * SNAKE_BODY_WIDTH, food.point.y * SNAKE_BODY_HEIGHT, SNAKE_BODY_WIDTH, SNAKE_BODY_HEIGHT };
 	SDL_RenderFillRect(gRenderer, &rect);
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 	SDL_RenderDrawRect(gRenderer, &rect);
+
+	
 	
 	//SDL_RenderFillRect(gRenderer, &fillRect);
 
