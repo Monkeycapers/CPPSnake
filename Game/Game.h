@@ -1,7 +1,7 @@
 #pragma once
 #include "Render.h"
 #include "Snake.h"
-
+#include <string>
 class Game
 {
 public:

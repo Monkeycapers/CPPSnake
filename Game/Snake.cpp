@@ -39,7 +39,8 @@ void Snake::tick1() {
 void Snake::tick2() {
 	Body b = body.front();
 	body.pop_front();
-	body.push_back({ {head.point.x, head.point.y}, {b.color.r, b.color.g, b.color.b, b.color.a} });
+	//Cycle in the head's point and body's color
+	body.push_back({ head.point, b.color });
 	
 }
 

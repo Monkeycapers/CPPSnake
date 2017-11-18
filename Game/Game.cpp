@@ -99,6 +99,7 @@ void Game::gameTick() {
 	if (snake->head.point.x == food.point.x && snake->head.point.y == food.point.y) {
 		//snake->grow(1);
 		snake->growWith(food);
+		SDL_SetWindowTitle(render->gWindow, ("Score: " + std::to_string(snake->body.size()) + ", | CPPSnake by Evan Jesty").c_str());
 		food = getRandomFood(1000, 0);
 	}
 
@@ -108,6 +109,7 @@ void Game::gameTick() {
 void Game::start() {
 	gameTimerId = SDL_AddTimer(50, gameTickCallBack, this);
 	food = getRandomFood(1000, 0);
+	SDL_SetWindowTitle(render->gWindow, ("Score: " + std::to_string(snake->body.size()) + ", | CPPSnake by Evan Jesty").c_str());
 	loop();
 	//Todo: any additonal setup
 	render->close();
@@ -117,6 +119,7 @@ void Game::start() {
 void Game::restart() {
 	snake->restart();
 	food = getRandomFood(1000, 0);
+	SDL_SetWindowTitle(render->gWindow, ("Score: " + std::to_string(snake->body.size()) + ", | CPPSnake by Evan Jesty").c_str());
 }
 
 Body Game::getRandomFood(int maxIterations, int currentIterations) {
