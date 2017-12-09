@@ -1,11 +1,16 @@
 #pragma once
 #include <SDL.h>
 #include "Game.h"
+#include <iostream>
+
+Uint32 gameTickCallBack(Uint32 interval, void* th);
 
 Game::Game()
 {
 	snake = new Snake();
 	render = new Render();
+
+	speed = 50;
 	
 	sizeX = 31;
 	sizeY = 23;
@@ -24,6 +29,13 @@ Game::~Game()
 void Game::loop() {
 	SDL_Event e;
 	running = true;
+
+	bool cntrl = 0;
+
+	bool magic = 0; //Dont worry about it
+
+	SDL_Keycode k;
+
 	while (running) {
 		//Handle keyinput
 		while (SDL_PollEvent(&e) != 0) {
@@ -53,7 +65,9 @@ void Game::loop() {
 					break;
 				}*/
 
-				 SDL_Keycode k = e.key.keysym.sym;
+				 k = e.key.keysym.sym;
+
+				 std::cout << k << std::endl;
 				 
 				 if ((k == SDLK_LEFT || k == SDLK_a) && (snake->direction != snake->RIGHT))
 					 snake->direction = snake->LEFT;
@@ -65,8 +79,34 @@ void Game::loop() {
 					 snake->direction = snake->DOWN;
 				 else if (k == SDLK_r)
 					 snake->restart();
-					
+				 else if (k == 61 && cntrl) { //61: Magic number for plus
+					 //std::cout << "yes" << std::endl;
+					 magic = true;
+					 speed--;
+					 //Base speed for saftey
+					 if (speed < 10) speed = 10;
+					 SDL_RemoveTimer(gameTimerId);
+					 gameTimerId = SDL_AddTimer(speed, gameTickCallBack, this);
+				 }
+				 else if (k == 45 && cntrl) { //45: Magic number for minus
+					 //std::cout << "yes" << std::endl;
+					 magic = true;
+					 speed++;
+					 SDL_RemoveTimer(gameTimerId);
+					 gameTimerId = SDL_AddTimer(speed, gameTickCallBack, this);
+				 }
+				 
+				 //std::cout << "KEYDOWN(unregister):" << cntrl << std::endl;
 
+				 cntrl = (k == SDLK_LCTRL);
+				 //std::cout << cntrl << std::endl;
+			}
+			else if (e.type == SDL_KEYUP) {
+				k = e.key.keysym.sym;
+				cntrl = cntrl && (k != SDLK_LCTRL);
+				if (magic) cntrl = true;
+				magic = false;
+				//std::cout << "KEYUP" << cntrl << std::endl;
 			}
 		}
 		if (timerFlag) {
@@ -107,7 +147,7 @@ void Game::gameTick() {
 }
 
 void Game::start() {
-	gameTimerId = SDL_AddTimer(50, gameTickCallBack, this);
+	gameTimerId = SDL_AddTimer(speed, gameTickCallBack, this);
 	food = getRandomFood(1000, 0);
 	SDL_SetWindowTitle(render->gWindow, ("Score: " + std::to_string(snake->body.size()) + ", | CPPSnake by Evan Jesty").c_str());
 	loop();

@@ -9,6 +9,8 @@ public:
 	int sizeX;
 	int sizeY;
 
+	int speed;
+
 	Body food;
 
 	Snake* snake;
